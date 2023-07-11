@@ -2,43 +2,22 @@
 import logging
 logger = logging.getLogger(__name__)
 
-import os
-import sys
-import uuid
 import socket
-import random
 
 import requests
 
 from time import sleep, time
-from itertools import chain
-from datetime import datetime
-from contextlib import closing
-from os.path import join, dirname
-
-from sqlalchemy.orm import joinedload
-from sqlalchemy.exc import IntegrityError
-
-from requests import ConnectionError
-
+from datetime import datetimegit
 from readability import Document
-
-from spyne.util.xml import get_xml_as_object
-from spyne.util.six import BytesIO
 from spyne.util.six.moves.urllib.parse import urlparse
-
-from twisted.internet.task import LoopingCall
-from twisted.internet.defer import DeferredList
-
-
-
-from lxml import etree, html
-from lxml.html import HTMLParser
-from lxml.html.builder import E
 
 class RssItem:
     def __init__(self, url, dt,title,summary):
-        pass # TODO
+        # TODO
+        self.url = url
+        self.dt = dt
+        self.title = title
+        self.summary = summary
 
 
 def _scrape_url(item):
