@@ -1,10 +1,24 @@
-import mailbox
+import requests
+from bs4 import BeautifulSoup
 
-mbox_file = '/Users/burak/Desktop/ARSKOM/mlstore/dpdk-dev/git/0.git/objects/pack-99493df56b69c60f442bde04dc08f8418c16e928.pack'
-mbox = mailbox.mbox(mbox_file)
+url = "https://em.gsu.edu.tr"
+keyword = "Chief"
+response = requests.get(url)
+soup = BeautifulSoup(response.content, "html.parser")
 
-for message in mbox:
-    print('From:', message['From'])
-    print('Subject:', message['Subject'])
-    print('Body:', message.get_payload())
-    print('---')
+
+print(soup.title.string)
+print(soup.p)
+print(soup.find_all('a'))
+if response.status_code == 200:
+    soup = BeautifulSoup(response.content, "html.parser")
+    rows = soup.find_all(string=lambda text: text and keyword in text)
+
+    if rows:
+        for row in rows:
+            # Satırı kopyalayın veya işleyin
+            print(row)
+    else:
+        print("Anahtar kelime bulunamadı.")
+else:
+    print("Sayfa çekilemedi. Hata kodu:", response.status_code)
