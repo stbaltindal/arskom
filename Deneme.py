@@ -1,24 +1,37 @@
-import requests
-from bs4 import BeautifulSoup
+import subprocess
+import os
 
-url = "https://em.gsu.edu.tr"
-keyword = "Chief"
-response = requests.get(url)
-soup = BeautifulSoup(response.content, "html.parser")
+os.environ["PATH"] += os.pathsep + "/path/to/git/bin"
 
 
-print(soup.title.string)
-print(soup.p)
-print(soup.find_all('a'))
-if response.status_code == 200:
-    soup = BeautifulSoup(response.content, "html.parser")
-    rows = soup.find_all(string=lambda text: text and keyword in text)
+def git_clone(command):
+    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout, stderr = process.communicate()  # İşlem tamamlanana kadar bekler
 
-    if rows:
-        for row in rows:
-            # Satırı kopyalayın veya işleyin
-            print(row)
+    if process.returncode == 0:
+        print("Git klonlama başarılı.")
     else:
-        print("Anahtar kelime bulunamadı.")
+        print("Git klonlama hatası:", stderr.decode().strip())
+
+
+# Örnek repository adresi
+repository_url = "https://github.com/openai/gpt-3.5-turkish"
+
+# Git klonlama işlemini çağır
+git_clone("git clone http://lore.kernel.org/ath12k/0 ath12k/git/0.git")
+print("İşlem bitti")
+
+
+""" # terminal komutuna erişim
+import subprocess
+
+command = "pwd"
+result = subprocess.run(command, shell=True, capture_output=True, text=True)
+
+if result.returncode == 0:
+    output = result.stdout
+    print("Komut çıktısı:\n", output)
 else:
-    print("Sayfa çekilemedi. Hata kodu:", response.status_code)
+    error = result.stderr
+    print("Hata mesajı:\n", error)
+"""

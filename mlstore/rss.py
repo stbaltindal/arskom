@@ -1,5 +1,5 @@
-
 import logging
+
 logger = logging.getLogger(__name__)
 
 import socket
@@ -11,8 +11,9 @@ from datetime import datetimegit
 from readability import Document
 from spyne.util.six.moves.urllib.parse import urlparse
 
+
 class RssItem:
-    def __init__(self, url, dt,title,summary):
+    def __init__(self, url, dt, title, summary):
         # TODO
         self.url = url
         self.dt = dt
@@ -28,7 +29,7 @@ def _scrape_url(item):
     }
 
     # fetch url
-    if purl.scheme in ('http', 'https'):
+    if purl.scheme in ("http", "https"):
         try:
             response = requests.get(url, headers=headers)
             data = response.text
@@ -43,19 +44,23 @@ def _scrape_url(item):
         return
 
     # fetch url
-    document = Document(data, unwanted_tags=['img'])
+    document = Document(data, unwanted_tags=["img"])
 
     summary = document.summary(html_partial=True)
-    summary = summary.replace(u"\u0091", "'") \
-                     .replace(u"\u0092", "'") \
-                     .replace(u"\u0093", '"') \
-                     .replace(u"\u0094", '"')
+    summary = (
+        summary.replace(u"\u0091", "'")
+        .replace(u"\u0092", "'")
+        .replace(u"\u0093", '"')
+        .replace(u"\u0094", '"')
+    )
 
     title = document.short_title()
-    title = title.replace(u"\u0091", "'") \
-                 .replace(u"\u0092", "'") \
-                 .replace(u"\u0093", '"') \
-                 .replace(u"\u0094", '"')
+    title = (
+        title.replace(u"\u0091", "'")
+        .replace(u"\u0092", "'")
+        .replace(u"\u0093", '"')
+        .replace(u"\u0094", '"')
+    )
 
     sleep(2)  # prevent too fast scraping
 
@@ -64,10 +69,4 @@ def _scrape_url(item):
         logger.warning("%s has no publication date -- defaulting to now", url)
         pub_date = datetime.utcnow()
 
-    return RssItem(
-        url=url,
-        dt=pub_date,
-        title=title,
-        summary=summary,
-    )
-
+    return RssItem(url=url, dt=pub_date, title=title, summary=summary,)
