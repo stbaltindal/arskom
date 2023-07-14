@@ -1,3 +1,4 @@
-print(type("a"))
-if type("a") == str:
-    print("class str'dir")
+if "1".isdigit():
+    print("digit")
+else:
+    print("degil")
