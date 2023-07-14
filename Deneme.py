@@ -1,11 +1,7 @@
 import subprocess
-import os
-
-os.environ["PATH"] += os.pathsep + "/path/to/git/bin"
-
 
 def git_clone(command):
-    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    process = subprocess.Popen("git", "clone", url, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout, stderr = process.communicate()  # İşlem tamamlanana kadar bekler
 
     if process.returncode == 0:
